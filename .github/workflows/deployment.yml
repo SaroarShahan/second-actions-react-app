@@ -1,0 +1,40 @@
+name: Deploy Project
+
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install yarn
+        run: npm install -g yarn
+      - name: Install dependencies
+        run: rm -rf node_modules && yarn install --frozen-lockfile
+      - name: Run tests
+        run: yarn test
+      - name: Notify test completion
+        run: echo "Tests completed successfully!"
+
+  deploy:
+    runs-on: ubuntu-latest
+    setps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install yarn
+        run: npm install -g yarn
+      - name: Install dependencies
+        run: rm -rf node_modules && yarn install --frozen-lockfile
+      - name: Build project
+        run: yarn build
+      - name: Deploy to production server
+        run: echo "Deploying to production server..."
